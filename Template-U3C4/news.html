@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #container {
+        display: flex;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!--DO NOT CHANGE THIS ID's-->
+
+    <div id="container">
+      <div id="sidebar">
+        <!--add your sidebar component here-->
+      </div>
+
+      <div id="main">
+        <!--DO NOT CHANGE THIS ID's-->
+        <!--Show the clicked article in detailed format here ONLY-->
+      </div>
+    </div>
+  </body>
+</html>
+
+<script type="module">
+  import sidebar from "./components/sidebar.js";
+  import { apiCall, appendArticles } from "./scripts/main.js";
+
+  import storeSearchterm from './scripts/search.js';
+
+  document.querySelector("#sidebar").innerHTML = sidebar();
+
+  document.querySelector("#searchbar").addEventListener("keypress", (e) => {
+    if (e.key == "Enter") {
+      let search_term = document.querySelector("#searchbar").value;
+    storeSearchterm(search_term);
+    }
+  });
+
+  let data = JSON.parse(localStorage.getItem("article"));
+
+  let main = document.querySelector("#main");
+  let data1 = [data];
+  appendArticles(data1, main);
+
+  let description = document.createElement("p");
+  description.textContent = ` Description ${data.description}`;
+
+  let news = document.createElement("p");
+  news.textContent = `News: ${data.urlToImage}`;
+
+  let title = document.createElement("h4");
+  title.textContent = `Title: ${data.source.name}`;
+
+  let publisher = document.createElement("p");
+  publisher.textContent =`Date: ${data.publishedAt}`;
+
+  let content = document.createElement("p");
+  content.textContent = data.content;
+
+  main.append(title, news, description, content, publisher );
+</script>
